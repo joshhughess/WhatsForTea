@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_account"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="My Account" />
+        <item
+            android:id="@+id/nav_mealPlan"
+            android:icon="@drawable/ic_today_black_24dp"
+            android:title="Meal Plan" />
+        <item
+            android:id="@+id/nav_chooseMeal"
+            android:icon="@drawable/ic_search_black_24dp"
+            android:title="Choose Meal" />
+        <item
+            android:id="@+id/nav_shoppingList"
+            android:icon="@drawable/ic_list_black_24dp"
+            android:title="Shopping List" />
+        <item
+        android:id="@+id/nav_foodAtHome"
+        android:icon="@drawable/ic_list_black_24dp"
+        android:title="Food At Home" />
+        <item
+            android:id="@+id/nav_shopsNearby"
+            android:icon="@drawable/ic_location_on_black_24dp"
+            android:title="Shops Nearby" />
+    </group>
+
+</menu>

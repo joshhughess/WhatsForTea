@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">WhatsForTea</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="signOut">Sign Out</string>
+
+    <string name="AccountTitle">Your Account</string>
+
+    <string name="MealPlanTitle">Meal Plan</string>
+
+    <string name="ChooseMealTitle">Choose Meals</string>
+
+    <string name="ShoppingListTitle">Shopping List</string>
+
+    <string name="FoodAtHomeTitle">Food at Home</string>
+
+    <string name="ShopsNearbyTitle">Shops Nearby</string>
+
+    <string name="LoginUsernameText">Username</string>
+
+    <string name="LoginPasswordText">Password</string>
+
+    <string name="LoginButton">Login</string>
+
+    <string-array name="foodMenu">
+        <item>Lasagne</item>
+        <item>Cheese burger</item>
+        <item>Chicken Tikka Masala</item>
+        <item>Chicken Fajitas</item>
+        <item>Salad</item>
+    </string-array>
+</resources>

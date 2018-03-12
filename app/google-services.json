@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1001594645246",
+    "firebase_url": "https://whatsfortea-f6090.firebaseio.com",
+    "project_id": "whatsfortea-f6090",
+    "storage_bucket": "whatsfortea-f6090.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1001594645246:android:4d084be646ded6ce",
+        "android_client_info": {
+          "package_name": "com.example.n0584052.whatsfortea"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1001594645246-lc8lvivpofmqsjl2425rlpouhcpjfq1o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.n0584052.whatsfortea",
+            "certificate_hash": "02507b04ffb71f9c121438562594a8ceb7d041ed"
+          }
+        },
+        {
+          "client_id": "1001594645246-3pilvr9g183dh6li2pbr8aq6913fm427.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGqDyutTlkZu7nU2zP9gBVUILJ8Sum-4k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1001594645246-3pilvr9g183dh6li2pbr8aq6913fm427.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
