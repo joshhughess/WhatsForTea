@@ -6,7 +6,13 @@
 
     <string name="signOut">Sign Out</string>
 
-    <string name="AccountTitle">Your Account</string>
+    <string name="AccountTitle">Your Preferences</string>
+
+    <string name="updateAccount">Update Account</string>
+
+    <string name="prefVeg">Vegetarian?</string>
+
+    <string name="prefYes">Yes</string>
 
     <string name="MealPlanTitle">Meal Plan</string>
 
@@ -23,6 +29,10 @@
     <string name="LoginPasswordText">Password</string>
 
     <string name="LoginButton">Login</string>
+    <string name="titleFoodAtHome">Food At Home</string>
+    <string name="btnShoppingList">Add to Shopping List</string>
+    <string name="titleShoppingList">Shopping List</string>
+
 
     <string-array name="foodMenu">
         <item>Lasagne</item>

@@ -1,6 +1,8 @@
 package com.example.n0584052.whatsfortea;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,10 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,7 +36,7 @@ import java.util.HashMap;
  * {@link FoodAtHomeFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class FoodAtHomeFragment extends ListFragment implements AdapterView.OnItemClickListener {
+public class FoodAtHomeFragment extends Fragment {
 
     //private OnFragmentInteractionListener mListener;
     ArrayAdapter<String> adapter;
@@ -39,7 +44,12 @@ public class FoodAtHomeFragment extends ListFragment implements AdapterView.OnIt
 
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users/"+mAuth.getCurrentUser().getUid());
 
-    private ListView lv;
+    ListView listview;
+    ArrayList<String> foodAtHomeList=new ArrayList<>();
+    ArrayList<String> hiddenList=new ArrayList<>();
+    EditText txtName;
+    EditText txtQuantity;
+
     public FoodAtHomeFragment() {
         // Required empty public constructor
     }
@@ -49,27 +59,6 @@ public class FoodAtHomeFragment extends ListFragment implements AdapterView.OnIt
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final ArrayList<String> items = new ArrayList<String>();
-        final ArrayList<String> itemQuantities = new ArrayList<String>();
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                items.add((String) snapshot.child("FoodAtHome").child("Item").child("ItemName").getValue());
-                itemQuantities.add((String) snapshot.child("FoodAtHome").child("Item").child("ItemQuantity").getValue());
-                System.out.println(snapshot.child("FoodAtHome").child("Item").getValue());  //prints "Do you have data? You'll love Firebase."
-                for(int i = 0;i<items.size();i++){
-                    Log.d("test",items.get(i).toString());
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-        lv = (ListView) container.findViewById(R.id);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1,items);
-        setListAdapter(adapter);
-        getListView().setOnItemClickListener(this);
         View view = inflater.inflate(R.layout.fragment_food_at_home, container, false);
         return view;
     }
@@ -78,11 +67,63 @@ public class FoodAtHomeFragment extends ListFragment implements AdapterView.OnIt
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-    }
+        listview = (ListView) getView().findViewById(R.id.listView);
+        adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,foodAtHomeList);
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(getActivity(), "Item: " + position, Toast.LENGTH_SHORT).show();
+        listview.setAdapter(adapter);
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
+                String val =(String) adapterView.getItemAtPosition(position);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                alertDialogBuilder.setTitle(foodAtHomeList.get(position));
+                alertDialogBuilder.setMessage(hiddenList.get(position));
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
+        });
+        mDatabase.child("FoodAtHome").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(final DataSnapshot dataSnapshot, String s) {
+                String key = dataSnapshot.getKey().toString();
+                String value = dataSnapshot.getValue().toString();
+                foodAtHomeList.add(key);
+                hiddenList.add(value);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                String key = dataSnapshot.getKey().toString();
+                String value = dataSnapshot.getValue().toString();
+                for(int i=0;i<foodAtHomeList.size();i++){
+                    if(foodAtHomeList.get(i).equals(key)){
+                        foodAtHomeList.remove(i);
+                        hiddenList.remove(i);
+                        foodAtHomeList.add(key);
+                        hiddenList.add(value);
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

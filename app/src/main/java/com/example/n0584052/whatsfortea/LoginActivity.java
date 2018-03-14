@@ -21,8 +21,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -96,15 +99,27 @@ public class LoginActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Log.d(TAG2, mAuth.getCurrentUser().getDisplayName());
                             mDatabase = FirebaseDatabase.getInstance().getReference();
-                            mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getUid());
-                            mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("ShoppingList").setValue("Nothing here yet.");
-                            mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("ShoppingList").child("Item").setValue("Nothing here yet.");
-                            mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("ShoppingList").child("Item").child("ItemName").setValue("Nothing here yet.");
-                            mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("ShoppingList").child("Item").child("ItemQuantity").setValue("Nothing here yet.");
-                            mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("FoodAtHome").setValue("Nothing here yet.");
-                            mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("FoodAtHome").child("Item").setValue("Nothing here yet.");
-                            mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("FoodAtHome").child("Item").child("ItemName").setValue("Nothing here yet.");
-                            mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("FoodAtHome").child("Item").child("ItemQuantity").setValue("Nothing here yet.");
+                            mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                    if(dataSnapshot.child("users").hasChild(mAuth.getCurrentUser().getUid())){
+                                        Log.d(TAG2,"already found user");
+                                    }else{
+                                        mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getUid());
+                                        mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("ShoppingList");
+                                        mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("FoodAtHome");
+                                        mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("MealPlan");
+                                        mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("Preferences");
+                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
                             Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
                             myIntent.putExtra("signIn",mAuth.getCurrentUser().getDisplayName());
                             startActivity(myIntent);

@@ -11,15 +11,13 @@
         android:layout_height="match_parent">
 
         <ListView
-            android:id="@android:id/list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:id="@+id/chooseMenuListView"
+            android:layout_width="368dp"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteY="81dp"
+            tools:layout_editor_absoluteX="8dp">
         </ListView>
 
-        <TextView
-            android:id="@android:id/empty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-        </TextView>
     </android.support.constraint.ConstraintLayout>
+
 </FrameLayout>

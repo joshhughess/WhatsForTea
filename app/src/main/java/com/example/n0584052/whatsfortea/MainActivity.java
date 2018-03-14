@@ -1,47 +1,34 @@
 package com.example.n0584052.whatsfortea;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.EditText;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -87,6 +74,10 @@ public class MainActivity extends AppCompatActivity
         View hView = navigationView.getHeaderView(0);
             TextView accountUsername = (TextView)hView.findViewById(R.id.accountUsername);
             accountUsername.setText(mAuth.getCurrentUser().getDisplayName());
+
+        Uri imgUri = Uri.parse(mAuth.getCurrentUser().getPhotoUrl().toString());
+        ImageView profilePic = (ImageView)hView.findViewById(R.id.imageView);
+        Picasso.with(this).load(imgUri).into(profilePic);
     }
 
 
@@ -209,6 +200,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_shopsNearby) {
             // Create new fragment and transaction
             Log.d("CREATE", "onNavigationItemSelected: navshopsnearby");
+
+            Intent intent = new Intent(this,ShopsNearbyFragment.class);
+
             Fragment newFragment =  new ShopsNearbyFragment();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 

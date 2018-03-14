@@ -1,20 +1,84 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.n0584052.whatsfortea.ShoppingListFragment">
+    tools:context="com.example.n0584052.whatsfortea.ShoppingListFragment"
+    tools:layout_editor_absoluteY="81dp"
+    tools:layout_editor_absoluteX="0dp">
 
     <!-- TODO: Update blank fragment layout -->
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
+    <EditText
+        android:id="@+id/txtShoppingListQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="New item quantity"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.242"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/btnShoppingList"
+        app:layout_constraintTop_toBottomOf="@+id/txtShoppingListItem"
+        app:layout_constraintVertical_bias="0.481" />
+
+    <EditText
+        android:id="@+id/txtShoppingListItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="11dp"
+        android:ems="10"
+        android:hint="New shopping list item"
+        android:inputType="textPersonName"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/btnShoppingList"
+        app:layout_constraintTop_toBottomOf="@+id/listView2"
+        app:layout_constraintHorizontal_bias="0.242" />
+
+    <Button
+        android:id="@+id/btnShoppingList"
+        android:layout_width="104dp"
+        android:layout_height="74dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/btnShoppingList"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listView2"
+        app:layout_constraintVertical_bias="0.363" />
 
     <TextView
         android:id="@android:id/empty"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </TextView>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/titleShoppingList"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/listView2"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintVertical_bias="0.347"></TextView>
 
-</FrameLayout>
+    <ListView
+        android:id="@+id/listView2"
+        android:layout_width="349dp"
+        android:layout_height="284dp"
+        tools:layout_editor_absoluteY="63dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"></ListView>
+
+</android.support.constraint.ConstraintLayout>
