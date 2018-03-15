@@ -32,6 +32,7 @@
     <string name="titleFoodAtHome">Food At Home</string>
     <string name="btnShoppingList">Add to Shopping List</string>
     <string name="titleShoppingList">Shopping List</string>
+    <string name="cBoxVeg">Vegetarian?</string>
 
 
     <string-array name="foodMenu">

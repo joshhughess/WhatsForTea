@@ -4,10 +4,14 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
@@ -17,7 +21,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -30,6 +36,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import static android.R.attr.data;
 
@@ -47,6 +54,7 @@ public class ChooseMealFragment extends Fragment implements DatePickerDialog.OnD
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
+
     ListView listview;
     ArrayList<String> chooseMenuList=new ArrayList<>();
 
@@ -56,6 +64,7 @@ public class ChooseMealFragment extends Fragment implements DatePickerDialog.OnD
         // Required empty public constructor
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -63,9 +72,32 @@ public class ChooseMealFragment extends Fragment implements DatePickerDialog.OnD
         return view;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        final CheckBox vegetarian = (CheckBox) getView().findViewById(R.id.vegetarian);
+
+
+
+        final Calendar myCalendar = Calendar.getInstance();
+        final EditText dateSelect = (EditText) getView().findViewById(R.id.getDateSelected);
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                String myFormat = "MM/dd/yy"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                dateSelect.setText(sdf.format(myCalendar.getTime()));
+            }
+
+        };
 
         listview = (ListView) getView().findViewById(R.id.chooseMenuListView);
         adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,chooseMenuList);
@@ -82,16 +114,25 @@ public class ChooseMealFragment extends Fragment implements DatePickerDialog.OnD
                     msg += foodObjects.get(position).getIngredientQuantities().get(i)+" - "+foodObjects.get(position).getIngredientNames().get(i)+"\n";
                 }
                 alertDialogBuilder.setMessage(msg);
+                if(dateSelect.getParent()!=null)
+                    ((ViewGroup)dateSelect.getParent()).removeView(dateSelect);
+                alertDialogBuilder.setView(dateSelect);
+                dateSelect.setVisibility(getView().VISIBLE);
+                dateSelect.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new DatePickerDialog(getActivity(), date, myCalendar
+                                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                    }
+                });
                 alertDialogBuilder.setPositiveButton("Add to Meal Plan?", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         //do things
-                        DialogFragment picker = new DatePickerFragment();
-                        picker.show(getFragmentManager(), "datePicker");
-                            something here
-                        Log.d("hellp",picker.onCreateDialog(savedInstanceState).toString());
-                        mDatabase.child("/users/"+mAuth.getCurrentUser().getUid()+"/MealPlan").child(foodObjects.get(position).getFoodItemName()).child("Vegetarian").setValue(foodObjects.get(position).getVegetarian());
+
+                        mDatabase.child("/users/"+mAuth.getCurrentUser().getUid()+"/MealPlan").child(dateSelect.getText().toString().replaceAll("\\/","-")).child(foodObjects.get(position).getFoodItemName()).child("vegetarian").setValue(foodObjects.get(position).getVegetarian());
                         for(int i=0;i<foodObjects.get(position).getIngredientNames().size();i++) {
-                            mDatabase.child("/users/"+mAuth.getCurrentUser().getUid()+"/MealPlan").child(foodObjects.get(position).getFoodItemName()).child(foodObjects.get(position).getIngredientNames().get(i)).setValue(foodObjects.get(position).getIngredientQuantities().get(i));
+                            mDatabase.child("/users/"+mAuth.getCurrentUser().getUid()+"/MealPlan").child(dateSelect.getText().toString().replaceAll("\\/","-")).child(foodObjects.get(position).getFoodItemName()).child("ingredients").child(foodObjects.get(position).getIngredientNames().get(i)).setValue(foodObjects.get(position).getIngredientQuantities().get(i));
                         }
                         adapter.notifyDataSetChanged();
                     }
@@ -202,6 +243,21 @@ public class ChooseMealFragment extends Fragment implements DatePickerDialog.OnD
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+
+        vegetarian.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(vegetarian.isChecked()){
+                    for(int i=0;i<chooseMenuList.size();i++){
+                        if(foodObjects.get(i).getVegetarian().equals("N")){
+                            Log.d("foodObject",foodObjects.get(i).getFoodItemName());
+                            foodObjects.remove(i);
+                        }
+                    }
+                }
+                adapter.notifyDataSetChanged();
             }
         });
     }

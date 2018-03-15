@@ -18,6 +18,33 @@
             tools:layout_editor_absoluteX="8dp">
         </ListView>
 
+        <EditText
+            android:id="@+id/getDateSelected"
+            android:focusable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="Choose Date for meal"
+            android:visibility="invisible"
+            tools:layout_editor_absoluteX="24dp"
+            tools:layout_editor_absoluteY="17dp" />
+
+        <CheckBox
+            android:id="@+id/vegetarian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cBoxVeg"
+            app:layout_constraintLeft_toRightOf="@+id/getDateSelected"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/chooseMenuListView"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintHorizontal_bias="0.652"
+            app:layout_constraintVertical_bias="0.242" />
     </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>
