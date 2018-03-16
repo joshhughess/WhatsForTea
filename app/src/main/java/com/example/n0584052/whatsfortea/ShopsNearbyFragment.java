@@ -33,6 +33,12 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -63,15 +69,44 @@ public class ShopsNearbyFragment extends Fragment {
     MapView mMapView;
     private GoogleMap googleMap;
     private FusedLocationProviderClient mFusedLocationClient;
-    int height = 100;
-    int width = 100;
-    BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.mipmap.marker);
-    Bitmap b=bitmapdraw.getBitmap();
-    Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users/"+mAuth.getCurrentUser().getUid());
+    private String preferredShop;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_shops_nearby, container, false);
+
+        mDatabase.child("preferences").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if(dataSnapshot.getKey().equals("supermarket")){
+                    Log.d("preferredshop", dataSnapshot.getValue().toString());
+                    preferredShop = dataSnapshot.getValue().toString();
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         mMapView = (MapView) rootView.findViewById(R.id.map);
         mMapView.onCreate(savedInstanceState);
@@ -106,7 +141,7 @@ public class ShopsNearbyFragment extends Fragment {
                                 if (location != null) {
                                     // Logic to handle location object
                                     Log.d("test", location.toString());
-                                    String locationURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+location.getLatitude()+","+location.getLongitude()+"&radius=2000&type=shop&keyword=sainsburys&key=AIzaSyAGqDyutTlkZu7nU2zP9gBVUILJ8Sum-4k";
+                                    String locationURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+location.getLatitude()+","+location.getLongitude()+"&radius=2000&type=shop&keyword="+preferredShop+"&key=AIzaSyAGqDyutTlkZu7nU2zP9gBVUILJ8Sum-4k";
                                     Log.d("locationURL", locationURL);
                                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                                     StrictMode.setThreadPolicy(policy);
@@ -143,15 +178,17 @@ public class ShopsNearbyFragment extends Fragment {
                                                 JSONObject geometry = oneObject.getJSONObject("geometry");
                                                 String openCloseStatus = "Closed";
                                                 JSONObject opening_hours = oneObject.getJSONObject("opening_hours");
-                                                openCloseStatus = opening_hours.getString("open_now");
-                                                Log.d("openCloseStatus",openCloseStatus);
+                                                if (opening_hours.has("open_now")){
+                                                    openCloseStatus = opening_hours.getString("open_now");
+                                                }
                                                 String nameLocation = oneObject.getString("name");
                                                 String ratingLocation = oneObject.getString("rating");
                                                 JSONObject locations = geometry.getJSONObject("location");
                                                 String oneObjectsItem = oneObject.getString("geometry");
                                                 String oneObjectsItem2 = oneObject.getString("id");
                                                 LatLng thisLatLong = new LatLng(Double.valueOf(locations.getString("lat")),Double.valueOf(locations.getString("lng")));
-                                                googleMap.addMarker(new MarkerOptions().position(thisLatLong).title(nameLocation).snippet(ratingLocation+" stars\n"+openCloseStatus).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
+                                                googleMap.addMarker(new MarkerOptions().position(thisLatLong).title(nameLocation).snippet(ratingLocation+" stars\n"+openCloseStatus));
+                                                Log.d("added marker", "onSuccess");
                                             } catch (JSONException e) {
                                                 // Oops
                                             }

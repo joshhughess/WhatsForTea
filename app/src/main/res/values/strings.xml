@@ -35,11 +35,12 @@
     <string name="cBoxVeg">Vegetarian?</string>
 
 
-    <string-array name="foodMenu">
-        <item>Lasagne</item>
-        <item>Cheese burger</item>
-        <item>Chicken Tikka Masala</item>
-        <item>Chicken Fajitas</item>
-        <item>Salad</item>
+    <string-array name="supermarkets">
+        <item>Select</item>
+        <item>Asda</item>
+        <item>Tesco</item>
+        <item>Morrisons</item>
+        <item>Sainsburys</item>
+        <item>Aldi</item>
     </string-array>
 </resources>
