@@ -140,9 +140,7 @@ public class ShopsNearbyFragment extends Fragment {
                                 // Got last known location. In some rare situations this can be null.
                                 if (location != null) {
                                     // Logic to handle location object
-                                    Log.d("test", location.toString());
-                                    String locationURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+location.getLatitude()+","+location.getLongitude()+"&radius=2000&type=shop&keyword="+preferredShop+"&key=AIzaSyAGqDyutTlkZu7nU2zP9gBVUILJ8Sum-4k";
-                                    Log.d("locationURL", locationURL);
+                                    String locationURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+location.getLatitude()+","+location.getLongitude()+"&radius=5000&type=shop&keyword="+preferredShop+"&key=AIzaSyAGqDyutTlkZu7nU2zP9gBVUILJ8Sum-4k";
                                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                                     StrictMode.setThreadPolicy(policy);
                                     DefaultHttpClient httpclient = new DefaultHttpClient(new BasicHttpParams());
@@ -167,7 +165,6 @@ public class ShopsNearbyFragment extends Fragment {
                                             sb.append(line + "\n");
                                         }
                                         result = sb.toString();
-                                        Log.d("result !",result);
                                         JSONObject jObject = new JSONObject(result);
                                         JSONArray jArray = jObject.getJSONArray("results");
                                         for (int i=0; i < jArray.length(); i++)
@@ -176,10 +173,10 @@ public class ShopsNearbyFragment extends Fragment {
                                                 JSONObject oneObject = jArray.getJSONObject(i);
                                                 // Pulling items from the array
                                                 JSONObject geometry = oneObject.getJSONObject("geometry");
-                                                String openCloseStatus = "Closed";
+                                                String openCloseStatus = "Closed now";
                                                 JSONObject opening_hours = oneObject.getJSONObject("opening_hours");
                                                 if (opening_hours.has("open_now")){
-                                                    openCloseStatus = opening_hours.getString("open_now");
+                                                    openCloseStatus = "Open now";
                                                 }
                                                 String nameLocation = oneObject.getString("name");
                                                 String ratingLocation = oneObject.getString("rating");
@@ -187,7 +184,7 @@ public class ShopsNearbyFragment extends Fragment {
                                                 String oneObjectsItem = oneObject.getString("geometry");
                                                 String oneObjectsItem2 = oneObject.getString("id");
                                                 LatLng thisLatLong = new LatLng(Double.valueOf(locations.getString("lat")),Double.valueOf(locations.getString("lng")));
-                                                googleMap.addMarker(new MarkerOptions().position(thisLatLong).title(nameLocation).snippet(ratingLocation+" stars\n"+openCloseStatus));
+                                                googleMap.addMarker(new MarkerOptions().position(thisLatLong).title(nameLocation).snippet(ratingLocation+" ★ "+openCloseStatus));
                                                 Log.d("added marker", "onSuccess");
                                             } catch (JSONException e) {
                                                 // Oops
