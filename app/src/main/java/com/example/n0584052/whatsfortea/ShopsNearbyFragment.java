@@ -2,27 +2,51 @@ package com.example.n0584052.whatsfortea;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Bundle;
 //import com.google.android.gms.maps.*;
 //import com.google.android.gms.maps.model.*;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.concurrent.Executor;
 
 import static android.R.attr.radius;
 import static android.R.attr.type;
@@ -38,6 +62,12 @@ public class ShopsNearbyFragment extends Fragment {
 
     MapView mMapView;
     private GoogleMap googleMap;
+    private FusedLocationProviderClient mFusedLocationClient;
+    int height = 100;
+    int width = 100;
+    BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.mipmap.marker);
+    Bitmap b=bitmapdraw.getBitmap();
+    Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,8 +88,7 @@ public class ShopsNearbyFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
-
-                // For showing a move to my location button
+                mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
                 if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
@@ -68,17 +97,95 @@ public class ShopsNearbyFragment extends Fragment {
                     //                                          int[] grantResults)
                     // to handle the case where the user grants the permission. See the documentation
                     // for ActivityCompat#requestPermissions for more details.
-//                    googleMap.setMyLocationEnabled(true);
-
-                    // For dropping a marker at a point on the Map
-                    LatLng sydney = new LatLng(-34, 151);
-                    googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
-
-                    // For zooming automatically to the location of the marker
-                    CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
-                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                    return;
                 }
+                mFusedLocationClient.getLastLocation()
+                        .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                // Got last known location. In some rare situations this can be null.
+                                if (location != null) {
+                                    // Logic to handle location object
+                                    Log.d("test", location.toString());
+                                    String locationURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+location.getLatitude()+","+location.getLongitude()+"&radius=2000&type=shop&keyword=sainsburys&key=AIzaSyAGqDyutTlkZu7nU2zP9gBVUILJ8Sum-4k";
+                                    Log.d("locationURL", locationURL);
+                                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                                    StrictMode.setThreadPolicy(policy);
+                                    DefaultHttpClient httpclient = new DefaultHttpClient(new BasicHttpParams());
+                                    HttpPost httppost = new HttpPost(locationURL);
+// Depends on your web service
+                                    httppost.setHeader("Content-type", "application/json");
+
+                                    InputStream inputStream = null;
+                                    String result = null;
+                                    try {
+                                        HttpResponse response = httpclient.execute(httppost);
+                                        HttpEntity entity = response.getEntity();
+
+                                        inputStream = entity.getContent();
+                                        // json is UTF-8 by default
+                                        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
+                                        StringBuilder sb = new StringBuilder();
+
+                                        String line = null;
+                                        while ((line = reader.readLine()) != null)
+                                        {
+                                            sb.append(line + "\n");
+                                        }
+                                        result = sb.toString();
+                                        Log.d("result !",result);
+                                        JSONObject jObject = new JSONObject(result);
+                                        JSONArray jArray = jObject.getJSONArray("results");
+                                        for (int i=0; i < jArray.length(); i++)
+                                        {
+                                            try {
+                                                JSONObject oneObject = jArray.getJSONObject(i);
+                                                // Pulling items from the array
+                                                JSONObject geometry = oneObject.getJSONObject("geometry");
+                                                String openCloseStatus = "Closed";
+                                                JSONObject opening_hours = oneObject.getJSONObject("opening_hours");
+                                                openCloseStatus = opening_hours.getString("open_now");
+                                                Log.d("openCloseStatus",openCloseStatus);
+                                                String nameLocation = oneObject.getString("name");
+                                                String ratingLocation = oneObject.getString("rating");
+                                                JSONObject locations = geometry.getJSONObject("location");
+                                                String oneObjectsItem = oneObject.getString("geometry");
+                                                String oneObjectsItem2 = oneObject.getString("id");
+                                                LatLng thisLatLong = new LatLng(Double.valueOf(locations.getString("lat")),Double.valueOf(locations.getString("lng")));
+                                                googleMap.addMarker(new MarkerOptions().position(thisLatLong).title(nameLocation).snippet(ratingLocation+" stars\n"+openCloseStatus).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
+                                            } catch (JSONException e) {
+                                                // Oops
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        // Oops
+                                        Log.d("uh-oh !",e.toString());
+                                    }
+                                    finally {
+                                        try{if(inputStream != null)inputStream.close();}catch(Exception squish){}
+                                    }
+                                    LatLng myLocation = new LatLng(location.getLatitude(),location.getLongitude());
+                                    CameraPosition cameraPosition = new CameraPosition.Builder().target(myLocation).zoom(12).build();
+                                    if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                        // TODO: Consider calling
+                                        //    ActivityCompat#requestPermissions
+                                        // here to request the missing permissions, and then overriding
+                                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                        //                                          int[] grantResults)
+                                        // to handle the case where the user grants the permission. See the documentation
+                                        // for ActivityCompat#requestPermissions for more details.
+                                        return;
+                                    }
+                                    googleMap.setMyLocationEnabled(true);
+
+                                    // For zooming automatically to the location of the marker
+                                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                                }
+                            }
+                        });
+
+
+                return;
             }
         });
 

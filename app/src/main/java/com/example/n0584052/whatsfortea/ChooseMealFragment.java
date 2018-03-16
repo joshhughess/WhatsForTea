@@ -249,12 +249,25 @@ public class ChooseMealFragment extends Fragment implements DatePickerDialog.OnD
         vegetarian.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ArrayList<Food> tempObject = foodObjects;
+                Log.d("foodObjSize", String.valueOf(foodObjects.size()));
+                Log.d("tempObjSize", String.valueOf(tempObject.size()));
                 if(vegetarian.isChecked()){
-                    for(int i=0;i<chooseMenuList.size();i++){
+                    for(int i=0;i<foodObjects.size();i++){
                         if(foodObjects.get(i).getVegetarian().equals("N")){
                             Log.d("foodObject",foodObjects.get(i).getFoodItemName());
-                            foodObjects.remove(i);
+                            tempObject.remove(i);
+                            chooseMenuList.remove(i);
+                            i--;
                         }
+                    }
+                    Log.d("foodObjSize", String.valueOf(foodObjects.size()));
+                    Log.d("tempObjSize", String.valueOf(tempObject.size()));
+                }else{
+                    chooseMenuList.clear();
+                    for(int i=0;i<foodObjects.size();i++){
+                        Log.d("checl","unchecked");
+                        chooseMenuList.add(foodObjects.get(i).getFoodItemName());
                     }
                 }
                 adapter.notifyDataSetChanged();
