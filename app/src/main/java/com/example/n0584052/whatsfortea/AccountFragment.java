@@ -1,10 +1,12 @@
 package com.example.n0584052.whatsfortea;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -74,11 +79,11 @@ public class AccountFragment extends Fragment {
         vegetarian.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(vegetarian.isChecked()){
-                    vegChoice = "Y";
-                }else{
-                    vegChoice = "N";
-                }
+            if(vegetarian.isChecked()){
+                vegChoice = "Y";
+            }else{
+                vegChoice = "N";
+            }
             }
         });
 
@@ -86,12 +91,52 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(!supermarketChoiceSelected.equals("Select")) {
-                    Log.d("supermarketChoiceSele",supermarketChoiceSelected);
                     mDatabase.child("preferences").child("supermarket").setValue(supermarketChoiceSelected);
+                    mDatabase.child("preferences").child("vegetarian").setValue(vegChoice);
+                    Toast.makeText(getContext(), "Updated your account", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getContext(), "Please select a supermarket", Toast.LENGTH_SHORT).show();
                 }
-                mDatabase.child("preferences").child("vegetarian").setValue(vegChoice);
             }
         });
+
+        mDatabase.child("preferences").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String key = dataSnapshot.getKey().toString();
+                String value = dataSnapshot.getValue().toString();
+                if(key.equals("supermarket")){
+                    int position = adapter.getPosition(value);
+                    supermarketChoice.setSelection(position);
+                }
+                if(key.equals("vegetarian")){
+                    if(value.toString().matches("Y")){
+                        vegetarian.setChecked(true);
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         return view;
     }
 
@@ -134,4 +179,5 @@ public class AccountFragment extends Fragment {
 //        // TODO: Update argument type and name
 //        void onFragmentInteraction(Uri uri);
 //    }
+//
 }

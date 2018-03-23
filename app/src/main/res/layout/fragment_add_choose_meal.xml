@@ -1,0 +1,329 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.n0584052.whatsfortea.AddChooseMealFragment">
+
+    <ScrollView
+        android:layout_width="365dp"
+        android:layout_height="465dp"
+        android:layout_marginTop="8dp"
+        tools:layout_editor_absoluteX="9dp">
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <EditText
+            android:id="@+id/txtIngredient5"
+            android:layout_width="174dp"
+            android:layout_height="41dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:hint="@string/ingredient_name_5"
+            android:inputType="textPersonName"
+            android:visibility="invisible"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/txtQuantity"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtIngredient4" />
+
+        <EditText
+            android:id="@+id/txtIngredient1"
+            android:layout_width="173dp"
+            android:layout_height="35dp"
+            android:ems="10"
+            android:hint="@string/ingredient_name_1"
+            android:inputType="textPersonName"
+            android:visibility="invisible"
+            android:layout_marginLeft="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/txtQuantity1"
+            android:layout_marginRight="8dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="67dp" />
+
+        <EditText
+            android:id="@+id/txtQuantity2"
+            android:layout_width="132dp"
+            android:layout_height="39dp"
+            android:ems="10"
+            android:hint="@string/quantity_2"
+            android:inputType="textPersonName"
+            android:visibility="invisible"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtQuantity1"
+            android:layout_marginRight="39dp"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <EditText
+            android:id="@+id/txtIngredient4"
+            android:layout_width="174dp"
+            android:layout_height="38dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:hint="@string/ingredient_name_4"
+            android:inputType="textPersonName"
+            android:visibility="invisible"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/txtQuantity"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtIngredient3" />
+
+        <EditText
+            android:id="@+id/txtQuantity4"
+            android:layout_width="134dp"
+            android:layout_height="38dp"
+            android:layout_marginRight="37dp"
+            android:ems="10"
+            android:hint="@string/quantity_4"
+            android:inputType="textPersonName"
+            android:visibility="invisible"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtQuantity3" />
+
+        <EditText
+            android:id="@+id/txtIngredient2"
+            android:layout_width="174dp"
+            android:layout_height="41dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:hint="@string/ingredient_name_2"
+            android:inputType="textPersonName"
+            android:visibility="invisible"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/txtQuantity"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtIngredient1" />
+
+        <EditText
+            android:id="@+id/txtQuantity1"
+            android:layout_width="131dp"
+            android:layout_height="34dp"
+            android:ems="10"
+            android:hint="@string/quantity_1"
+            android:inputType="textPersonName"
+            android:visibility="invisible"
+            android:layout_marginRight="40dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="67dp" />
+
+        <EditText
+            android:id="@+id/txtIngredient3"
+            android:layout_width="174dp"
+            android:layout_height="41dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:hint="@string/ingredient_name_3"
+            android:inputType="textPersonName"
+            android:visibility="invisible"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/txtQuantity"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtIngredient2" />
+
+        <EditText
+            android:id="@+id/txtQuantity3"
+            android:layout_width="132dp"
+            android:layout_height="42dp"
+            android:ems="10"
+            android:hint="@string/quantity_3"
+            android:inputType="textPersonName"
+            android:visibility="invisible"
+            android:layout_marginRight="39dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtQuantity2" />
+
+        <EditText
+            android:id="@+id/txtQuantity7"
+            android:layout_width="132dp"
+            android:layout_height="39dp"
+            android:layout_marginRight="39dp"
+            android:ems="10"
+            android:hint="@string/quantity_7"
+            android:inputType="textPersonName"
+            android:visibility="invisible"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtQuantity6" />
+
+        <EditText
+            android:id="@+id/txtMealName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="@string/meal_name"
+            android:inputType="textPersonName"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/txtIngredient"
+            android:layout_width="174dp"
+            android:layout_height="37dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="@string/ingredient_name"
+            android:inputType="textPersonName"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtMealName" />
+
+        <EditText
+            android:id="@+id/txtIngredient8"
+            android:layout_width="174dp"
+            android:layout_height="41dp"
+            android:ems="10"
+            android:hint="@string/ingredient_name_8"
+            android:inputType="textPersonName"
+            android:visibility="invisible"
+            android:layout_marginTop="6dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtIngredient7"
+            android:layout_marginLeft="16dp"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <EditText
+            android:id="@+id/txtIngredient7"
+            android:layout_width="174dp"
+            android:layout_height="41dp"
+            android:ems="10"
+            android:hint="@string/ingredient_name_7"
+            android:inputType="textPersonName"
+            android:visibility="invisible"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtIngredient6"
+            android:layout_marginLeft="16dp"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <EditText
+            android:id="@+id/txtQuantity6"
+            android:layout_width="132dp"
+            android:layout_height="39dp"
+            android:layout_marginRight="39dp"
+            android:ems="10"
+            android:hint="@string/quantity_6"
+            android:inputType="textPersonName"
+            android:visibility="invisible"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtQuantity5" />
+
+        <EditText
+            android:id="@+id/txtQuantity8"
+            android:layout_width="132dp"
+            android:layout_height="39dp"
+            android:layout_marginRight="39dp"
+            android:ems="10"
+            android:hint="@string/quantity_8"
+            android:inputType="textPersonName"
+            android:visibility="invisible"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtQuantity7" />
+
+        <EditText
+            android:id="@+id/txtIngredient6"
+            android:layout_width="174dp"
+            android:layout_height="41dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:hint="@string/ingredient_name_6"
+            android:inputType="textPersonName"
+            android:visibility="invisible"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/txtQuantity"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtIngredient5" />
+
+        <EditText
+            android:id="@+id/txtQuantity5"
+            android:layout_width="132dp"
+            android:layout_height="39dp"
+            android:layout_marginRight="39dp"
+            android:ems="10"
+            android:hint="@string/quantity_5"
+            android:inputType="textPersonName"
+            android:visibility="invisible"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtQuantity4" />
+
+        <EditText
+            android:id="@+id/txtQuantity"
+            android:layout_width="130dp"
+            android:layout_height="36dp"
+            android:ems="10"
+            android:hint="@string/quantity"
+            android:inputType="textPersonName"
+            android:layout_marginRight="41dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="17dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtMealName"
+            app:layout_constraintLeft_toRightOf="@+id/txtIngredient"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintHorizontal_bias="1.0" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/addIngredient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:fabSize="mini"
+            app:srcCompat="@mipmap/ic_add"
+            android:contentDescription="@string/add_another_ingredient_item"
+            app:layout_constraintRight_toLeftOf="@+id/txtMealName"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintHorizontal_bias="0.275" />
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+    <Button
+        android:id="@+id/btnAddMeal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_meal"
+        android:contentDescription="Add meal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.804" />
+
+    <CheckBox
+        android:id="@+id/vegetarianAddMeal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/addMealVegetarian"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.066"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/btnAddMeal"
+        app:layout_constraintTop_toBottomOf="@+id/txtIngredient8"
+        app:layout_constraintVertical_bias="0.652" />
+</android.support.constraint.ConstraintLayout>

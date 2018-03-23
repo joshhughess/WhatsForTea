@@ -94,7 +94,6 @@ public class MealPlanFragment extends Fragment {
                 alertDialog.show();
             }
         });
-
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
             @Override

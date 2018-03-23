@@ -20,13 +20,17 @@
             android:icon="@drawable/ic_list_black_24dp"
             android:title="Shopping List" />
         <item
-        android:id="@+id/nav_foodAtHome"
-        android:icon="@drawable/ic_list_black_24dp"
-        android:title="Food At Home" />
+            android:id="@+id/nav_foodAtHome"
+            android:icon="@drawable/ic_list_black_24dp"
+            android:title="Food At Home" />
         <item
             android:id="@+id/nav_shopsNearby"
             android:icon="@drawable/ic_location_on_black_24dp"
             android:title="Shops Nearby" />
+        <item
+            android:id="@+id/nav_feedback"
+            android:icon="@mipmap/ic_feedback"
+            android:title="Feedback" />
     </group>
 
 </menu>

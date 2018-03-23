@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -70,6 +73,9 @@ public class FoodAtHomeFragment extends Fragment {
         listview = (ListView) getView().findViewById(R.id.listView);
         adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,foodAtHomeList);
 
+        final EditText txtName = getView().findViewById(R.id.txt_foodAtHomeName);
+        final EditText txtQuantity = getView().findViewById(R.id.txt_FoodAtHomeQuantity);
+
         listview.setAdapter(adapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -78,8 +84,43 @@ public class FoodAtHomeFragment extends Fragment {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
                 alertDialogBuilder.setTitle(foodAtHomeList.get(position));
                 alertDialogBuilder.setMessage(hiddenList.get(position));
+                alertDialogBuilder.setNeutralButton("Edit Item", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        FoodAtHomeItem foodAtHomeItem = new FoodAtHomeItem();
+                        foodAtHomeItem.setFoodAtHomeName(foodAtHomeList.get(position));
+                        foodAtHomeItem.setFoodAtHomeQuantity(hiddenList.get(position));
+                        Fragment newFragment = new EditFoodAtHomeFragment();
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("obj", foodAtHomeItem);
+                        newFragment.setArguments(bundle);
+                        transaction.replace(R.id.mainContainer, newFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                    }
+                });
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
+            }
+        });
+        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int position, long l) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                alertDialogBuilder.setTitle("Delete "+foodAtHomeList.get(position)+" from Food at Home?");
+                alertDialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(getContext(), "Deleted "+foodAtHomeList.get(position)+" from list!", Toast.LENGTH_SHORT).show();
+                        mDatabase.child("FoodAtHome").child(foodAtHomeList.get(position)).removeValue();
+                        foodAtHomeList.remove(position);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+                return true;
             }
         });
         mDatabase.child("FoodAtHome").addChildEventListener(new ChildEventListener() {
@@ -120,6 +161,44 @@ public class FoodAtHomeFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+
+        FloatingActionButton fab = getView().findViewById(R.id.fab_foodAtHome);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                alertDialogBuilder.setTitle("Add a food at home item");
+                txtName.setText("");
+                txtQuantity.setText("");
+                Context context = getContext();
+                LinearLayout layout = new LinearLayout(context);
+                if(txtName.getParent()!=null)
+                    ((ViewGroup)txtName.getParent()).removeView(txtName);
+                if(txtQuantity.getParent()!=null)
+                    ((ViewGroup)txtQuantity.getParent()).removeView(txtQuantity);
+                layout.addView(txtName);
+                layout.addView(txtQuantity);
+                alertDialogBuilder.setView(layout);
+                txtName.setVisibility(getView().VISIBLE);
+                txtQuantity.setVisibility(getView().VISIBLE);
+                layout.setOrientation(LinearLayout.VERTICAL);
+                alertDialogBuilder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(txtName.getText().toString().equals("") && txtQuantity.getText().toString().equals("")) {
+                            Toast.makeText(getContext(),"You need both a quantity and a name to add to your food at home!",Toast.LENGTH_LONG).show();
+                        }else {
+                            mDatabase.child("FoodAtHome").child(txtName.getText().toString()).setValue(txtQuantity.getText().toString());
+                            Toast.makeText(getContext(), "Added " + txtName.getText().toString() + " to list!", Toast.LENGTH_SHORT).show();
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         });
 

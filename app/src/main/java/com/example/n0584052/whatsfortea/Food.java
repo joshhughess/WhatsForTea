@@ -28,21 +28,13 @@ public class Food {
         return foodItemName;
     }
 
-    public void addIngredientName(String theIngredientName){
-        this.ingredientNames.add(theIngredientName);
-    }
+    public void addIngredientName(String theIngredientName){this.ingredientNames.add(theIngredientName);    }
 
-    public void addIngredientQuantity(String theIngredientQuantity){
-        this.ingredientQuantities.add(theIngredientQuantity);
-    }
+    public void addIngredientQuantity(String theIngredientQuantity){this.ingredientQuantities.add(theIngredientQuantity);    }
 
-    public void setIngredientNames(ArrayList<String> theIngredientNames){
-        this.ingredientNames = theIngredientNames;
-    }
+    public void setIngredientNames(ArrayList<String> theIngredientNames){this.ingredientNames = theIngredientNames;    }
 
-    public void setIngredientQuantities(ArrayList<String> theIngredientQuantities){
-        this.ingredientQuantities = theIngredientQuantities;
-    }
+    public void setIngredientQuantities(ArrayList<String> theIngredientQuantities){ this.ingredientQuantities = theIngredientQuantities;    }
 
     public void setVegetarian(String theVegetarian) {
         this.vegetarian = theVegetarian;

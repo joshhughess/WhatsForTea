@@ -5,7 +5,7 @@ android {
     buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "com.example.n0584052.whatsfortea"
-        minSdkVersion 15
+        minSdkVersion 26
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -38,8 +38,12 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.squareup.picasso:picasso:2.5.0'
     compile 'com.google.android.gms:play-services-location:11.8.0'
+    compile 'joda-time:joda-time:2.9.4'
+    compile 'com.google.firebase:firebase-storage:11.8.0'
+    compile 'com.firebaseui:firebase-ui-storage:0.6.0'
+
     compile 'org.apache.httpcomponents:httpcore:4.4.1'
     compile 'org.apache.httpcomponents:httpclient:4.5'
-
+    compile 'com.android.support:support-compat:26.1.0'
 }
 apply plugin: 'com.google.gms.google-services'

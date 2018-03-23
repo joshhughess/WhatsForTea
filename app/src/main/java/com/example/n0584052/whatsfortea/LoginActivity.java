@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -34,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mDatabase;
 
     @Override
@@ -43,6 +46,12 @@ public class LoginActivity extends AppCompatActivity {
 
         // [START config_signin]
         // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
+        Log.d("googleSignInClient",mGoogleSignInClient.toString());
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(new View.OnClickListener(){
 
@@ -52,19 +61,62 @@ public class LoginActivity extends AppCompatActivity {
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
         // [END config_signin]
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);// [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            public String TAG = "";
+
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    //Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
+                    //LoginActivity.this.startActivity(myIntent);
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    final DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
+                    user = mAuth.getCurrentUser();
+                    //Adds UID to database
+                    final DatabaseReference dref;
+                    dref = FirebaseDatabase.getInstance().getReference("UserID/");
+                    dref.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            if (!snapshot.hasChild(mAuth.getUid())) {
+                                myRef.child("UserID").child(mAuth.getUid()).setValue(mAuth.getCurrentUser().getDisplayName());
+                                //Adds test modules to database
+                                myRef.child("UserID").child(mAuth.getUid()).child("Modules").child("Test Module").setValue("Lorem Ipsum is simply dummy text of the printing and typesetting industry.");
+                                //Adds test Deadlines to database
+                                myRef.child("UserID").child(mAuth.getUid()).child("Deadlines").child("Test Deadline").setValue("MPD Is due 23rd");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                    Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
+                    LoginActivity.this.startActivity(myIntent);
+                    finish();
+                } else {
+                    // User is signed out
+                    System.out.println("User has signed out");
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                    mGoogleSignInClient.signOut();
+                }
+            }
+        };
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        ProgressBar progressBar = findViewById(R.id.progressBarLogin);
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -72,6 +124,8 @@ public class LoginActivity extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
+                signInButton.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG2, "Google sign in failed", e);
@@ -127,6 +181,7 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG2, "signInWithCredential:failure", task.getException());
+                            mGoogleSignInClient.signOut();
                             //Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                         }
 

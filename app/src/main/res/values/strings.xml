@@ -43,4 +43,52 @@
         <item>Sainsburys</item>
         <item>Aldi</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="loginTitle">Login to WhatsForTea</string>
+    <string name="navigation_menu">Navigation menu</string>
+    <string name="add_meal">Add Meal</string>
+    <string name="addMealVegetarian">Vegetarian?</string>
+    <string name="add_another_ingredient_item">Add another ingredient item</string>
+    <string name="quantity">Quantity</string>
+    <string name="quantity_5">Quantity 5</string>
+    <string name="ingredient_name_6">Ingredient Name 6</string>
+    <string name="quantity_8">Quantity 8</string>
+    <string name="quantity_6">Quantity 6</string>
+    <string name="ingredient_name_7">Ingredient Name 7</string>
+    <string name="ingredient_name_8">Ingredient Name 8</string>
+    <string name="ingredient_name">Ingredient Name</string>
+    <string name="meal_name">Meal Name</string>
+    <string name="quantity_7">Quantity 7</string>
+    <string name="quantity_3">Quantity 3</string>
+    <string name="ingredient_name_3">Ingredient Name 3</string>
+    <string name="quantity_1">Quantity 1</string>
+    <string name="ingredient_name_2">Ingredient Name 2</string>
+    <string name="quantity_4">Quantity 4</string>
+    <string name="ingredient_name_4">Ingredient Name 4</string>
+    <string name="quantity_2">Quantity 2</string>
+    <string name="ingredient_name_1">Ingredient Name 1</string>
+    <string name="ingredient_name_5">Ingredient Name 5</string>
+    <string name="add_a_new_meal">Add a new meal</string>
+    <string name="loading">Loading</string>
+    <string name="title_choose_a_meal">Choose a meal</string>
+    <string name="foodAtHomeTitle">Edit food at home:</string>
+    <string name="save_food_at_home">Save Food at Home</string>
+    <string name="save">Save</string>
+    <string name="editShoppingListTitle">Edit Shopping List:</string>
+    <string name="edit_shopping_list_quantity">Edit shopping list quantity</string>
+    <string name="edit_quantity">Edit Quantity</string>
+    <string name="leave_feedback">Leave Feedback</string>
+    <string name="feedback">Feedback</string>
+    <string name="rate_our_app">Rate our app</string>
+    <string name="leave_your_comments_here">Leave your comments here</string>
+    <string name="rating_bar">Rating bar</string>
+    <string name="add_item_to_food_at_home">Add item to food at home</string>
+    <string name="ingredient_quantity">Ingredient quantity</string>
+    <string name="helpGuide">Welcome to WhatsForTea, this app is made to allow its users to manage the meals that they cook, their shopping list and the food they have at home.\n Simply use the navigation bar on the left to acces the different pages available to you. \nChoose Meals will show all of the meals currently available on the app for you to add to your meal plan, feel free to add one using the button \'Add Meal\'. When adding a meal, be sure to use the \'+\' button to add more ingredients to the meal. \nIf you are just adding the meal to your plan, you can view the plan by going to \'Meal Plan\' here you can select a date and below the calendar a list of all the meals you have on that day will show up, click them to find out the ingredients needed. \nYour Shopping List and Food at Home ingredients can be found on the appropriate pages, be sure to click on these to find out the quantities of the ingredients selected, have the option to edit the new amount. You can also long click to delete the item from your list. \nIn your \'Account\' page, you will notice two preferences a shops nearby and a vegetarian, if you select vegetarian, the next time you go onto the \'Choose a meal\' we will pre-filter the results for your ease. \nThe preferred stores near you will appear if you allow location services on the \'Shops Nearby\' page so that you can find the nearest store near you. \nAnd thats it, for now! Feel free to leave your feedback on the \'Feedback\' page to let us know your thoughts, and if you feel anything can be improved upon. \nWe hope from now on, you never have to ask the question: What\'s for tea?</string>
+    <string name="title_help_guide">Help Guide</string>
+    <string name="addItemToShoppingList">Add item to shopping list</string>
+    <string name="new_shopping_list_item">New shopping list item</string>
+    <string name="new_item_quantity">New item quantity</string>
 </resources>
