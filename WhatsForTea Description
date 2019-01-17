@@ -1,0 +1,11 @@
+WhatsForTea was an app I created for the Mobile Platform Development Module I undertook, designed for people to plan meals for the week.
+
+Some of the main features included - 
+    User login with Google Account
+    User preferences such as whether they are vegetarian or what store would they like to see close to them in the 'Shops Nearby' section
+    Allow users to select a meal from the 'Choose Meal' section and add it to their meal plan
+    Automatically work out based on either the users meal choice added to the week, whether the infredients will need adding to the 'Shopping List', or 'Food at Home' sections
+    Allow users to edit 'Shopping List' and 'Food at Home' sections (if user edits spaghetti from 200g to 100g, the Food at Home section will add spaghetti to 100g or increment the value if already within)
+    Allow users to view the meals they have this week
+    Allow users to add meals and take photos of them to save onto the app to use at a later date
+    Allow users to leave reviews on the app
